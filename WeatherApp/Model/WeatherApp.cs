@@ -1,59 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace WeatherApp.Model
 {
-    public class Minimum
-    {
-        public int Value { get; set; }
-        public string Unit { get; set; }
-        public int UnitType { get; set; }
-    }
-
-    public class Maximum
-    {
-        public int Value { get; set; }
-        public string Unit { get; set; }
-        public int UnitType { get; set; }
-    }
-
-    public class Temperature
-    {
-        public Minimum Minimum { get; set; }
-        public Maximum Maximum { get; set; }
-    }
-
     public class Day
     {
         public int Icon { get; set; }
-        public string IconPhrase { get; set; }
-        public bool HasPrecipitation { get; set; }
-        public string PrecipitationType { get; set; }
-        public string PrecipitationIntensity { get; set; }
     }
 
     public class Night
     {
         public int Icon { get; set; }
-        public string IconPhrase { get; set; }
-        public bool HasPrecipitation { get; set; }
-        public string PrecipitationType { get; set; }
-        public string PrecipitationIntensity { get; set; }
     }
 
-    public class DailyForecast
+    public class DailyForecast : INotifyPropertyChanged
     {
-        public DateTime Date { get; set; }
-        public int EpochDate { get; set; }
-        public Temperature Temperature { get; set; }
-        public Day Day { get; set; }
-        public Night Night { get; set; }
-        public IList<string> Sources { get; set; }
-        public string MobileLink { get; set; }
-        public string Link { get; set; }
+        private DateTime date;
+        public DateTime Date { get { return date; } set { date = value; OnPropertyChanged("Date"); }}
+
+        private Day day;
+        public Day Day { get { return day; } set { day = value; OnPropertyChanged("Day"); } }
+
+        private Night night;
+        public Night Night { get { return night; } set { night = value; OnPropertyChanged("Night"); } }
+
+        private IList<string> sources;
+        public IList<string> Sources { get { return sources; } set { sources = value; OnPropertyChanged("Sources"); } }
+
+        private string link;
+        public string Link { get { return link; } set { link = value; OnPropertyChanged("Link"); } }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        
+        private void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
     public class AccuWeather
